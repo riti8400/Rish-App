@@ -1,0 +1,785 @@
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="medium"
+  color="#fff"
+  type="square-jelly-box"
+  [fullScreen]="true"
+  ><p style="color: white;">Loading...</p></ngx-spinner
+>
+<app-menu (submitlocation)="updateLocation($event)"></app-menu>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="row">
+        <div class="grid">
+          <mat-grid-list cols="3" rowHeight="2:1">
+            <mat-grid-tile class="location">
+              <mat-grid-tile-header>
+                <div>
+                  <img src="../assets/location.png" alt="" />
+                </div>
+              </mat-grid-tile-header>
+              <mat-grid-tile-footer>
+                {{ Location }}
+              </mat-grid-tile-footer>
+            </mat-grid-tile>
+            <mat-grid-tile class="weather">
+              <mat-grid-tile-header>
+                <div>
+                  <img src="{{ mainImage }}" />
+                </div>
+              </mat-grid-tile-header>
+              <mat-grid-tile-footer>
+                {{ Weather }}
+              </mat-grid-tile-footer></mat-grid-tile
+            >
+            <mat-grid-tile class="temperature">
+              <mat-grid-tile-header>
+                <div>
+                  <img src="../assets/ac_unit.png" alt="" />
+                </div>
+              </mat-grid-tile-header>
+              <mat-grid-tile-footer>
+                <h1>{{ Temperature }}℃</h1>
+              </mat-grid-tile-footer></mat-grid-tile
+            >
+          </mat-grid-list>
+        </div>
+      </div>
+      <div class="row">
+        <div class="airGrid">
+          <mat-grid-list cols="1" rowHeight="3:1">
+            <mat-grid-tile class="aqiTile">
+              <div class="aqiLeft">
+                <h1 class="aqiDescription">AIR QUALITY INDEX</h1>
+              </div>
+              <div class="aqiText">
+                <h1>{{ aqi }}</h1>
+                <p>US AQI</p>
+              </div>
+              <div class="aqiQuality">
+                <h1>Air Quality :</h1>
+                <div class="row aqiHead">
+                  <h1>{{ aqiQuality }}</h1>
+                </div>
+              </div>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </div>
+      </div>
+      <div class="row">
+        <div class="corousel">
+          <app-line-chart></app-line-chart>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row main-acc">
+        <div class="scroll">
+          <mat-accordion class="accordion">
+            <h1>Weekly Weather Report</h1>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-description class="accDes">
+                  <div>
+                    {{ dailyDate[0]
+                    }}<img class="icons" src="{{ image[0] }}" alt="" />{{
+                      weatherMain[0]
+                    }}/{{ dailyinfo[0] }}℃
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div>
+                <div class="row">
+                  <div class="col-sm-4" style="float: left;">
+                    <img src="{{ image[0] }}" alt="" />
+                    <h3>{{ weatherDesc[0] }}</h3>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <span
+                          ><img
+                            height="20px;"
+                            width="20px"
+                            src="../assets/temperature.png"
+                            alt=""
+                        /></span>
+                      </div>
+                      <div class="col-sm-9">
+                        <h4>Max:{{ maxTemp[0] }}℃</h4>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <span
+                          ><img
+                            height="20px;"
+                            width="20px"
+                            src="../assets/temperature.png"
+                            alt=""
+                        /></span>
+                      </div>
+                      <div class="col-sm-9">
+                        <h4>Min:{{ minTemp[0] }}℃</h4>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="row air-pol-outerdiv">
+                      <span class="airpolheader">Pm2.5</span>
+                      <span class="airpoldata">{{ pm25[0] }}</span>
+                    </div>
+
+                    <div class="row air-pol-outerdiv">
+                      <span class="airpolheader">Pm10</span>
+                      <span class="airpoldata">{{ pm10[0] }}</span>
+                    </div>
+
+                    <div class="row air-pol-outerdiv">
+                      <span class="airpolheader">Domiment Pollutant</span>
+                      <span class="airpoldata">{{ domPol }}</span>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="row">
+                      <span
+                        ><img
+                          src="../assets/water-drop.png"
+                          style="width: 15%;"
+                        />
+                        <h4>Humidity:{{ humidity[0] }} rH</h4></span
+                      >
+                      <h1></h1>
+                    </div>
+                    <div class="row">
+                      <span
+                        ><img
+                          src="../assets/pressure.png"
+                          style="width: 15%;"
+                        />
+                        <h4>Pressure:{{ pressure[0] }} mbars</h4></span
+                      >
+                      <h1></h1>
+                    </div>
+                    <div class="row">
+                      <span
+                        ><img src="../assets/wind.png" style="width: 15%;" />
+                        <h4>Wind Speed:{{ wind_speed[0] }} km/hr</h4></span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel
+              (opened)="panelOpenState = true"
+              (closed)="panelOpenState = false"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-description>
+                  <div>
+                    {{ dailyDate[1]
+                    }}<img class="icons" src="{{ image[1] }}" alt="" />{{
+                      weatherMain[1]
+                    }}/{{ dailyinfo[1] }}℃
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div>
+                <div class="row">
+                  <div class="col-sm-4" style="float: left;">
+                    <img src="{{ image[1] }}" alt="" />
+                    <h3>{{ weatherDesc[1] }}</h3>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <span
+                          ><img
+                            height="20px;"
+                            width="20px"
+                            src="../assets/temperature.png"
+                            alt=""
+                        /></span>
+                      </div>
+                      <div class="col-sm-9">
+                        <h4>Max:{{ maxTemp[1] }}℃</h4>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <span
+                          ><img
+                            height="20px;"
+                            width="20px"
+                            src="../assets/temperature.png"
+                            alt=""
+                        /></span>
+                      </div>
+                      <div class="col-sm-9">
+                        <h4>Min:{{ minTemp[1] }}℃</h4>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="row air-pol-outerdiv">
+                      <span class="airpolheader">Pm2.5</span>
+                      <span class="airpoldata">{{ pm25[1] }}</span>
+                    </div>
+
+                    <div class="row air-pol-outerdiv">
+                      <span class="airpolheader">Pm10</span>
+                      <span class="airpoldata">{{ pm10[1] }}</span>
+                    </div>
+
+                    <div class="row air-pol-outerdiv">
+                      <span class="airpolheader">Domiment Pollutant</span>
+                      <span class="airpoldata">{{ domPol }}</span>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="row">
+                      <span
+                        ><img
+                          src="../assets/water-drop.png"
+                          style="width: 15%;"
+                        />
+                        <h4>Humidity:{{ humidity[1] }} rH</h4></span
+                      >
+                      <h1></h1>
+                    </div>
+                    <div class="row">
+                      <span
+                        ><img
+                          src="../assets/pressure.png"
+                          style="width: 15%;"
+                        />
+                        <h4>Pressure:{{ pressure[1] }} mbars</h4></span
+                      >
+                      <h1></h1>
+                    </div>
+                    <div class="row">
+                      <span
+                        ><img src="../assets/wind.png" style="width: 15%;" />
+                        <h4>Wind Speed:{{ wind_speed[1] }} km/hr</h4></span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel
+              (opened)="panelOpenState = true"
+              (closed)="panelOpenState = false"
+            >
+            </mat-expansion-panel>
+            <mat-expansion-panel
+              (opened)="panelOpenState = true"
+              (closed)="panelOpenState = false"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-description>
+                  <div>
+                    {{ dailyDate[2]
+                    }}<img class="icons" src="{{ image[2] }}" alt="" />{{
+                      weatherMain[2]
+                    }}/{{ dailyinfo[2] }}℃
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div>
+                <div class="row">
+                  <div class="col-sm-4" style="float: left;">
+                    <img src="{{ image[2] }}" alt="" />
+                    <h3>{{ weatherDesc[2] }}</h3>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <span
+                          ><img
+                            height="20px;"
+                            width="20px"
+                            src="../assets/temperature.png"
+                            alt=""
+                        /></span>
+                      </div>
+                      <div class="col-sm-9">
+                        <h4>Max:{{ maxTemp[2] }}℃</h4>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <span
+                          ><img
+                            height="20px;"
+                            width="20px"
+                            src="../assets/temperature.png"
+                            alt=""
+                        /></span>
+                      </div>
+                      <div class="col-sm-9">
+                        <h4>Min:{{ minTemp[2] }}℃</h4>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="row air-pol-outerdiv">
+                      <span class="airpolheader">Pm2.5</span>
+                      <span class="airpoldata">{{ pm25[2] }}</span>
+                    </div>
+
+                    <div class="row air-pol-outerdiv">
+                      <span class="airpolheader">Pm10</span>
+                      <span class="airpoldata">{{ pm10[2] }}</span>
+                    </div>
+
+                    <div class="row air-pol-outerdiv">
+                      <span class="airpolheader">Domiment Pollutant</span>
+                      <span class="airpoldata">{{ domPol }}</span>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="row">
+                      <span
+                        ><img
+                          src="../assets/water-drop.png"
+                          style="width: 15%;"
+                        />
+                        <h4>Humidity:{{ humidity[2] }} rH</h4></span
+                      >
+                      <h1></h1>
+                    </div>
+                    <div class="row">
+                      <span
+                        ><img
+                          src="../assets/pressure.png"
+                          style="width: 15%;"
+                        />
+                        <h4>Pressure:{{ pressure[2] }} mbars</h4></span
+                      >
+                      <h1></h1>
+                    </div>
+                    <div class="row">
+                      <span
+                        ><img src="../assets/wind.png" style="width: 15%;" />
+                        <h4>Wind Speed:{{ wind_speed[2] }} km/hr</h4></span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel
+              (opened)="panelOpenState = true"
+              (closed)="panelOpenState = false"
+            >
+            </mat-expansion-panel>
+            <mat-expansion-panel
+              (opened)="panelOpenState = true"
+              (closed)="panelOpenState = false"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-description>
+                  <div>
+                    {{ dailyDate[3]
+                    }}<img class="icons" src="{{ image[3] }}" alt="" />{{
+                      weatherMain[3]
+                    }}/{{ dailyinfo[3] }}℃
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div>
+                <div class="row">
+                  <div class="col-sm-4" style="float: left;">
+                    <img src="{{ image[3] }}" alt="" />
+                    <h3>{{ weatherDesc[3] }}</h3>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <span
+                          ><img
+                            height="20px;"
+                            width="20px"
+                            src="../assets/temperature.png"
+                            alt=""
+                        /></span>
+                      </div>
+                      <div class="col-sm-9">
+                        <h4>Max:{{ maxTemp[3] }}℃</h4>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <span
+                          ><img
+                            height="20px;"
+                            width="20px"
+                            src="../assets/temperature.png"
+                            alt=""
+                        /></span>
+                      </div>
+                      <div class="col-sm-9">
+                        <h4>Min:{{ minTemp[3] }}℃</h4>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="row air-pol-outerdiv">
+                      <span class="airpolheader">Pm2.5</span>
+                      <span class="airpoldata">{{ pm25[3] }}</span>
+                    </div>
+
+                    <div class="row air-pol-outerdiv">
+                      <span class="airpolheader">Pm10</span>
+                      <span class="airpoldata">{{ pm10[3] }}</span>
+                    </div>
+
+                    <div class="row air-pol-outerdiv">
+                      <span class="airpolheader">Domiment Pollutant</span>
+                      <span class="airpoldata">{{ domPol }}</span>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="row">
+                      <span
+                        ><img
+                          src="../assets/water-drop.png"
+                          style="width: 15%;"
+                        />
+                        <h4>Humidity:{{ humidity[3] }} rH</h4></span
+                      >
+                      <h1></h1>
+                    </div>
+                    <div class="row">
+                      <span
+                        ><img
+                          src="../assets/pressure.png"
+                          style="width: 15%;"
+                        />
+                        <h4>Pressure:{{ pressure[3] }} mbars</h4></span
+                      >
+                      <h1></h1>
+                    </div>
+                    <div class="row">
+                      <span
+                        ><img src="../assets/wind.png" style="width: 15%;" />
+                        <h4>Wind Speed:{{ wind_speed[3] }} km/hr</h4></span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel
+              (opened)="panelOpenState = true"
+              (closed)="panelOpenState = false"
+            >
+            </mat-expansion-panel>
+            <mat-expansion-panel
+              (opened)="panelOpenState = true"
+              (closed)="panelOpenState = false"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-description>
+                  <div>
+                    {{ dailyDate[4]
+                    }}<img class="icons" src="{{ image[4] }}" alt="" />{{
+                      weatherMain[4]
+                    }}/{{ dailyinfo[4] }}℃
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div>
+                <div class="row">
+                  <div class="col-sm-4" style="float: left;">
+                    <img src="{{ image[4] }}" alt="" />
+                    <h3>{{ weatherDesc[4]}}</h3>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <span
+                          ><img
+                            height="20px;"
+                            width="20px"
+                            src="../assets/temperature.png"
+                            alt=""
+                        /></span>
+                      </div>
+                      <div class="col-sm-9">
+                        <h4>Max:{{ maxTemp[4] }}℃</h4>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <span
+                          ><img
+                            height="20px;"
+                            width="20px"
+                            src="../assets/temperature.png"
+                            alt=""
+                        /></span>
+                      </div>
+                      <div class="col-sm-9">
+                        <h4>Min:{{ minTemp[4] }}℃</h4>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="row air-pol-outerdiv">
+                      <span class="airpolheader">Pm2.5</span>
+                      <span class="airpoldata">{{ pm25[4] }}</span>
+                    </div>
+
+                    <div class="row air-pol-outerdiv">
+                      <span class="airpolheader">Pm10</span>
+                      <span class="airpoldata">{{ pm10[4] }}</span>
+                    </div>
+
+                    <div class="row air-pol-outerdiv">
+                      <span class="airpolheader">Domiment Pollutant</span>
+                      <span class="airpoldata">{{ domPol }}</span>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="row">
+                      <span
+                        ><img
+                          src="../assets/water-drop.png"
+                          style="width: 15%;"
+                        />
+                        <h4>Humidity:{{ humidity[4] }} rH</h4></span
+                      >
+                      <h1></h1>
+                    </div>
+                    <div class="row">
+                      <span
+                        ><img
+                          src="../assets/pressure.png"
+                          style="width: 15%;"
+                        />
+                        <h4>Pressure:{{ pressure[4] }} mbars</h4></span
+                      >
+                      <h1></h1>
+                    </div>
+                    <div class="row">
+                      <span
+                        ><img src="../assets/wind.png" style="width: 15%;" />
+                        <h4>Wind Speed:{{ wind_speed[4] }} km/hr</h4></span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel
+              (opened)="panelOpenState = true"
+              (closed)="panelOpenState = false"
+            >
+            </mat-expansion-panel>
+            <mat-expansion-panel
+              (opened)="panelOpenState = true"
+              (closed)="panelOpenState = false"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-description>
+                  <div>
+                    {{ dailyDate[5]
+                    }}<img class="icons" src="{{ image[5] }}" alt="" />{{
+                      weatherMain[5]
+                    }}/{{ dailyinfo[5] }}℃
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div>
+                <div class="row">
+                  <div class="col-sm-4" style="float: left;">
+                    <img src="{{ image[5] }}" alt="" />
+                    <h3>{{ weatherDesc[5] }}</h3>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <span
+                          ><img
+                            height="20px;"
+                            width="20px"
+                            src="../assets/temperature.png"
+                            alt=""
+                        /></span>
+                      </div>
+                      <div class="col-sm-9">
+                        <h4>Max:{{ maxTemp[5] }}℃</h4>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <span
+                          ><img
+                            height="20px;"
+                            width="20px"
+                            src="../assets/temperature.png"
+                            alt=""
+                        /></span>
+                      </div>
+                      <div class="col-sm-9">
+                        <h4>Min:{{ minTemp[5] }}℃</h4>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="row air-pol-outerdiv">
+                      <span class="airpolheader">Pm2.5</span>
+                      <span class="airpoldata">{{ pm25[5] }}</span>
+                    </div>
+
+                    <div class="row air-pol-outerdiv">
+                      <span class="airpolheader">Pm10</span>
+                      <span class="airpoldata">{{ pm10[5] }}</span>
+                    </div>
+
+                    <div class="row air-pol-outerdiv">
+                      <span class="airpolheader">Domiment Pollutant</span>
+                      <span class="airpoldata">{{ domPol }}</span>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="row">
+                      <span
+                        ><img
+                          src="../assets/water-drop.png"
+                          style="width: 15%;"
+                        />
+                        <h4>Humidity:{{ humidity[5] }} rH</h4></span
+                      >
+                      <h1></h1>
+                    </div>
+                    <div class="row">
+                      <span
+                        ><img
+                          src="../assets/pressure.png"
+                          style="width: 15%;"
+                        />
+                        <h4>Pressure:{{ pressure[5] }} mbars</h4></span
+                      >
+                      <h1></h1>
+                    </div>
+                    <div class="row">
+                      <span
+                        ><img src="../assets/wind.png" style="width: 15%;" />
+                        <h4>Wind Speed:{{ wind_speed[5] }} km/hr</h4></span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel
+              (opened)="panelOpenState = true"
+              (closed)="panelOpenState = false"
+            >
+            </mat-expansion-panel>
+            <mat-expansion-panel
+              (opened)="panelOpenState = true"
+              (closed)="panelOpenState = false"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-description>
+                  <div>
+                    {{ dailyDate[6]
+                    }}<img class="icons" src="{{ image[6] }}" alt="" />{{
+                      weatherMain[6]
+                    }}/{{ dailyinfo[6] }}℃
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div>
+                <div class="row">
+                  <div class="col-sm-4" style="float: left;">
+                    <img src="{{ image[6] }}" alt="" />
+                    <h3>{{ weatherDesc[6] }}</h3>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <span
+                          ><img
+                            height="20px;"
+                            width="20px"
+                            src="../assets/temperature.png"
+                            alt=""
+                        /></span>
+                      </div>
+                      <div class="col-sm-9">
+                        <h4>Max:{{ maxTemp[6] }}℃</h4>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <span
+                          ><img
+                            height="20px;"
+                            width="20px"
+                            src="../assets/temperature.png"
+                            alt=""
+                        /></span>
+                      </div>
+                      <div class="col-sm-9">
+                        <h4>Min:{{ minTemp[6] }}℃</h4>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="row air-pol-outerdiv">
+                      <span class="airpolheader">Pm2.5</span>
+                      <span class="airpoldata">{{ pm25[6] }}</span>
+                    </div>
+
+                    <div class="row air-pol-outerdiv">
+                      <span class="airpolheader">Pm10</span>
+                      <span class="airpoldata">{{ pm10[6] }}</span>
+                    </div>
+
+                    <div class="row air-pol-outerdiv">
+                      <span class="airpolheader">Domiment Pollutant</span>
+                      <span class="airpoldata">{{ domPol }}</span>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="row">
+                      <span
+                        ><img
+                          src="../assets/water-drop.png"
+                          style="width: 15%;"
+                        />
+                        <h4>Humidity:{{ humidity[6] }} rH</h4></span
+                      >
+                      <h1></h1>
+                    </div>
+                    <div class="row">
+                      <span
+                        ><img
+                          src="../assets/pressure.png"
+                          style="width: 15%;"
+                        />
+                        <h4>Pressure:{{ pressure[6] }} mbars</h4></span
+                      >
+                      <h1></h1>
+                    </div>
+                    <div class="row">
+                      <span
+                        ><img src="../assets/wind.png" style="width: 15%;" />
+                        <h4>Wind Speed:{{ wind_speed[6] }} km/hr</h4></span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel
+              (opened)="panelOpenState = true"
+              (closed)="panelOpenState = false"
+            >
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

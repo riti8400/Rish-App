@@ -1,0 +1,77 @@
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="medium"
+  color="#fff"
+  type="square-jelly-box"
+  [fullScreen]="true"
+  ><p style="color: white;">Loading...</p></ngx-spinner
+>
+<div>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h2 style="font-family: 'Dancing Script', cursive;" class="text-center">
+          User Record
+        </h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div
+          class="table-responsive table mt-2"
+          role="grid"
+          aria-describedby="dataTable_info"
+        >
+          <table class="table my-0" id="dataTable-1">
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>User Name</th>
+                <th>Created Date</th>
+                <th>Login Status</th>
+                <th>Security Code</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                class="rowheight"
+                *ngFor="let col of record; let i = index"
+                [attr.data-index]="i"
+              >
+                <td>{{ record[i].firstName }}</td>
+                <td>{{ record[i].lastName }}</td>
+                <td>{{ record[i].userName }}</td>
+                <td>{{ record[i].createdDate }}</td>
+
+                <td>
+                  <button
+                    mat-raised-button
+                    color="warn"
+                    (click)="
+                      changeStatus(record[i].userName, record[i].loginStatus)
+                    "
+                  >
+                    {{ record[i].loginStatus === "A" ? "ACTIVE" : "DEACTIVE" }}
+                  </button>
+                </td>
+                <td>
+                  <button
+                    mat-raised-button
+                    color="accent"
+                    (click)="generateCode(record[i].userName)"
+                  >
+                    Generate
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr></tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

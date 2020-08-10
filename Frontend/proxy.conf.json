@@ -1,0 +1,6 @@
+{
+  "/": {
+    "target": "http://weatherpollution.herokuapp.com",
+    "secure": false
+  }
+}
